@@ -1,0 +1,63 @@
+import random
+
+def choose_movie():
+    bollywood_movies = [
+        "Sholay",
+        "Dilwale Dulhania Le Jayenge",
+        "Kabhi Khushi Kabhie Gham",
+        "3 Idiots",
+        "Lagaan",
+        "Zindagi Na Milegi Dobara",
+        "Dangal",
+        "Bajrangi Bhaijaan",
+        "Queen",
+        "PK"
+    ]
+    return random.choice(bollywood_movies)
+
+def display_word(movie, guessed_letters):
+    display = ''.join(letter if letter.lower() in guessed_letters or not letter.isalpha() else '_' for letter in movie)
+    return display
+
+def start_game():
+    
+    movie = choose_movie()
+    
+    guessed_letters = set()
+    incorrect_guesses = 0
+    max_incorrect_guesses = 6  
+
+    print("Welcome to the Bollywood Movie Guessing Game!")
+    print("Guess one letter at a time.")
+    
+    while incorrect_guesses < max_incorrect_guesses:
+        current_display = display_word(movie, guessed_letters)
+        print(f"Movie: {current_display}")
+        print(f"Incorrect guesses left: {max_incorrect_guesses - incorrect_guesses}")
+        
+        guess = input("Enter a letter: ").strip().lower()
+        
+        if len(guess) != 1 or not guess.isalpha():
+            print("Please enter a single letter.")
+            continue
+        
+        if guess in guessed_letters:
+            print("You've already guessed that letter.")
+            continue
+        
+        guessed_letters.add(guess)
+    
+        if guess in movie.lower():
+            print("Good guess!")
+        else:
+            print("Incorrect guess.")
+            incorrect_guesses += 1
+        
+        if all(letter.lower() in guessed_letters or not letter.isalpha() for letter in movie):
+            print(f"Congratulations! You've guessed the movie: '{movie}'")
+            break
+    else:
+        print(f"Sorry, you've run out of attempts. The correct movie was: '{movie}'")
+
+if __name__ == "__main__":
+    start_game()
